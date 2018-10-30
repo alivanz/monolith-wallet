@@ -17,7 +17,9 @@ const (
 	Bitcoin  = "btc"
 	Dogecoin = "doge"
 	Ethereum = "eth"
+
 	// test
+	BitcoinTestnet  = "btc_testnet"
 	EthereumGanache = "eth_ganache"
 
 	// Action
@@ -42,7 +44,13 @@ var (
 
 func main() {
 	flag.StringVar(&privkey, "privkey", "", "Override privkey")
-	flag.StringVar(&coin, "coin", Bitcoin, strings.Join([]string{Bitcoin, Dogecoin, Ethereum, EthereumGanache}, ", "))
+	flag.StringVar(&coin, "coin", Bitcoin, strings.Join([]string{
+		Bitcoin,
+		BitcoinTestnet,
+		Dogecoin,
+		Ethereum,
+		EthereumGanache,
+	}, ", "))
 	flag.StringVar(&rawdests, "dest", "", "Output destination (format=addr0:value0,addr1:value1,...)")
 	flag.StringVar(&action, "action", "", strings.Join([]string{GetAddress, GetBalance, Transfer}, ", "))
 	flag.Parse()
@@ -105,6 +113,8 @@ func main() {
 	switch coin {
 	case Bitcoin:
 		coin_bitcoin()
+	case BitcoinTestnet:
+		coin_bitcoin_testnet()
 	case Dogecoin:
 		coin_dogecoin()
 	case Ethereum:
