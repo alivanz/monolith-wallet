@@ -1,12 +1,14 @@
 package main
 
 import (
+	"encoding/hex"
 	"flag"
 	"log"
 	"strconv"
 	"strings"
 
 	crypto "github.com/alivanz/go-crypto"
+	"github.com/alivanz/go-crypto/bitcoin"
 	microwallet "github.com/alivanz/go-microwallet"
 )
 
@@ -23,6 +25,9 @@ const (
 )
 
 var (
+	// hack
+	privkey string
+
 	coin     string = Bitcoin
 	rawdests string = ""
 	action   string
@@ -34,6 +39,7 @@ var (
 )
 
 func main() {
+	flag.StringVar(&privkey, "privkey", "", "Override privkey")
 	flag.StringVar(&coin, "coin", Bitcoin, strings.Join([]string{Bitcoin, Dogecoin, Ethereum}, ", "))
 	flag.StringVar(&rawdests, "dest", "", "Output destination (format=addr0:value0,addr1:value1,...)")
 	flag.StringVar(&action, "action", "", strings.Join([]string{GetAddress, GetBalance, Transfer}, ", "))
@@ -44,15 +50,28 @@ func main() {
 	}
 
 	// Open wallet
-	bank, err := microwallet.OpenBank(nil)
-	if err != nil {
-		log.Print(err)
-		log.Fatal("Unable to locate micro-wallet")
-	}
-	wallet, err = bank.Open(0)
-	if err != nil {
-		log.Print(err)
-		log.Fatal("Unable to open wallet")
+	if len(privkey) == 0 {
+		bank, err := microwallet.OpenBank(nil)
+		if err != nil {
+			log.Print(err)
+			log.Fatal("Unable to locate micro-wallet")
+		}
+		wallet, err = bank.Open(0)
+		if err != nil {
+			log.Print(err)
+			log.Fatal("Unable to open wallet")
+		}
+	} else {
+		data, err := hex.DecodeString(privkey)
+		if err != nil {
+			log.Print(err)
+			log.Fatal("Unable to decode privkey")
+		}
+		wallet, err = bitcoin.NewWallet(data)
+		if err != nil {
+			log.Print(err)
+			log.Fatal("Unable to open wallet")
+		}
 	}
 
 	// Parse destination
