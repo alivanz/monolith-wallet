@@ -15,10 +15,20 @@ import (
 )
 
 func coin_ethereum() {
+	client, err := ethclient.Dial("https://mainnet.infura.io")
+	if err != nil {
+		log.Fatal(err)
+	}
+	coin_ethereum_(client)
+}
+func coin_ethereum_ganache() {
 	client, err := ethclient.Dial("http://127.0.0.1:7545")
 	if err != nil {
 		log.Fatal(err)
 	}
+	coin_ethereum_(client)
+}
+func coin_ethereum_(client *ethclient.Client) {
 	publicKeyECDSA, err := wallet.PubKey()
 	if err != nil {
 		log.Fatal(err)
