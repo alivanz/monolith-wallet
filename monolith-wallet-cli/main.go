@@ -35,6 +35,7 @@ var (
 	coin     string = Bitcoin
 	rawdests string = ""
 	action   string
+	windex   int
 	wallet   crypto.Wallet
 
 	// transfer destination
@@ -44,6 +45,7 @@ var (
 
 func main() {
 	flag.StringVar(&privkey, "privkey", "", "Override privkey")
+	flag.IntVar(&windex, "windex", 0, "Wallet index in micro-wallet")
 	flag.StringVar(&coin, "coin", Bitcoin, strings.Join([]string{
 		Bitcoin,
 		BitcoinTestnet,
@@ -66,7 +68,7 @@ func main() {
 			log.Print(err)
 			log.Fatal("Unable to locate micro-wallet")
 		}
-		wallet, err = bank.Open(0)
+		wallet, err = bank.Open(windex)
 		if err != nil {
 			log.Print(err)
 			log.Fatal("Unable to open wallet")
