@@ -10,8 +10,13 @@ import (
 )
 
 func coin_bitcoin() {
+	coin_bitcoinx(bitcoin.MainNetworkDesc, "btc", "main")
+}
+func coin_bitcoin_testnet() {
+	coin_bitcoinx(bitcoin.TestnetNetworkDesc, "btc", "test3")
+}
+func coin_bitcoinx(networkdesc bitcoin.NetworkDesc, coin, bcnetwork string) {
 	compressed := true
-	networkdesc := bitcoin.MainNetworkDesc
 	// get pubkey
 	pubkey, err := wallet.PubKey()
 	if err != nil {
@@ -28,7 +33,7 @@ func coin_bitcoin() {
 		log.Print(addr)
 
 	case GetBalance:
-		resp, err := BCGetBalance(addr.String())
+		resp, err := BCGetBalance(coin, bcnetwork, addr.String())
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -49,7 +54,7 @@ func coin_bitcoin() {
 			}
 		}
 		// Get unspent
-		unspent, err := GetUnspent(addr.String())
+		unspent, err := GetUnspent(coin, bcnetwork, addr.String())
 		if err != nil {
 			log.Fatal(err)
 		}
