@@ -17,6 +17,7 @@ const (
 	Bitcoin  = "btc"
 	Litecoin = "ltc"
 	Dogecoin = "doge"
+	Dashcoin = "dash"
 	Ethereum = "eth"
 
 	// test
@@ -52,6 +53,7 @@ func main() {
 		BitcoinTestnet,
 		Litecoin,
 		Dogecoin,
+		Dashcoin,
 		Ethereum,
 		EthereumGanache,
 	}, ", "))
@@ -123,6 +125,8 @@ func main() {
 		coin_litecoin()
 	case Dogecoin:
 		coin_dogecoin()
+	case Dashcoin:
+		coin_dash()
 	case Ethereum:
 		coin_ethereum()
 	case EthereumGanache:
