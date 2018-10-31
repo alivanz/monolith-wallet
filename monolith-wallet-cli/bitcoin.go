@@ -10,12 +10,12 @@ import (
 )
 
 func coin_bitcoin() {
-	coin_bitcoin_(bitcoin.MainNetworkDesc, "main")
+	coin_bitcoinx(bitcoin.MainNetworkDesc, "main")
 }
 func coin_bitcoin_testnet() {
-	coin_bitcoin_(bitcoin.TestnetNetworkDesc, "test3")
+	coin_bitcoinx(bitcoin.TestnetNetworkDesc, "test3")
 }
-func coin_bitcoin_(networkdesc bitcoin.NetworkDesc, bcnetwork string) {
+func coin_bitcoinx(networkdesc bitcoin.NetworkDesc, bcnetwork string) {
 	compressed := true
 	// get pubkey
 	pubkey, err := wallet.PubKey()
