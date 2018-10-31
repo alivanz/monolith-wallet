@@ -13,6 +13,7 @@ import (
 const (
 	// Coin
 	Bitcoin  = "btc"
+	Litecoin = "ltc"
 	Dogecoin = "doge"
 	Ethereum = "eth"
 
@@ -37,7 +38,13 @@ var (
 )
 
 func main() {
-	flag.StringVar(&coin, "coin", Bitcoin, strings.Join([]string{Bitcoin, BitcoinTestnet, Dogecoin, Ethereum}, ", "))
+	flag.StringVar(&coin, "coin", Bitcoin, strings.Join([]string{
+		Bitcoin,
+		BitcoinTestnet,
+		Litecoin,
+		Dogecoin,
+		Ethereum,
+	}, ", "))
 	flag.StringVar(&rawdests, "dest", "", "Output destination (format=addr0:value0,addr1:value1,...)")
 	flag.StringVar(&action, "action", "", strings.Join([]string{GetAddress, GetBalance, Transfer}, ", "))
 	flag.Parse()
@@ -89,6 +96,8 @@ func main() {
 		coin_bitcoin()
 	case BitcoinTestnet:
 		coin_bitcoin_testnet()
+	case Litecoin:
+		coin_litecoin()
 	case Dogecoin:
 		coin_dogecoin()
 	case Ethereum:

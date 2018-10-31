@@ -61,18 +61,18 @@ func (tx BCTxref) Script() []byte {
 	}
 }
 
-func BCGetBalance(network, address string) (*BCAddress, error) {
+func BCGetBalance(coin, network, address string) (*BCAddress, error) {
 	var resp BCAddress
-	err := HTTPGet("https://api.blockcypher.com/v1/btc/"+network+"/addrs/"+address+"/balance", &resp)
+	err := HTTPGet("https://api.blockcypher.com/v1/"+coin+"/"+network+"/addrs/"+address+"/balance", &resp)
 	if err != nil {
 		return nil, err
 	}
 	return &resp, nil
 }
 
-func GetUnspent(network, address string) ([]BCTxref, error) {
+func GetUnspent(coin, network, address string) ([]BCTxref, error) {
 	var resp BCAddressExt
-	err := HTTPGet("https://api.blockcypher.com/v1/btc/"+network+"/addrs/"+address+"?unspentOnly=true&includeScript=true", &resp)
+	err := HTTPGet("https://api.blockcypher.com/v1/"+coin+"/"+network+"/addrs/"+address+"?unspentOnly=true&includeScript=true", &resp)
 	if err != nil {
 		return nil, err
 	}
