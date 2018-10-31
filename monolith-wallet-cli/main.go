@@ -15,6 +15,7 @@ import (
 const (
 	// Coin
 	Bitcoin  = "btc"
+	Litecoin = "ltc"
 	Dogecoin = "doge"
 	Ethereum = "eth"
 
@@ -49,6 +50,7 @@ func main() {
 	flag.StringVar(&coin, "coin", Bitcoin, strings.Join([]string{
 		Bitcoin,
 		BitcoinTestnet,
+		Litecoin,
 		Dogecoin,
 		Ethereum,
 		EthereumGanache,
@@ -117,6 +119,8 @@ func main() {
 		coin_bitcoin()
 	case BitcoinTestnet:
 		coin_bitcoin_testnet()
+	case Litecoin:
+		coin_litecoin()
 	case Dogecoin:
 		coin_dogecoin()
 	case Ethereum:
