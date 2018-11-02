@@ -13,13 +13,6 @@ import (
 )
 
 const (
-	// Coin
-	Bitcoin  = "btc"
-	Litecoin = "ltc"
-	Dogecoin = "doge"
-	Dashcoin = "dash"
-	Ethereum = "eth"
-
 	// test
 	BitcoinTestnet  = "btc_testnet"
 	EthereumGanache = "eth_ganache"
@@ -34,8 +27,8 @@ var (
 	// hack
 	privkey string
 
-	coin     string = Bitcoin
-	rawdests string = ""
+	coin     string
+	rawdests string
 	action   string
 	windex   int
 	wallet   crypto.Wallet
@@ -46,17 +39,23 @@ var (
 )
 
 func main() {
+	// Coins
+	coins := make(map[string]func())
+	coins["btc"] = coin_bitcoin
+	coins["btc_testnet"] = coin_bitcoin_testnet
+	coins["doge"] = coin_dogecoin
+	coins["dast"] = coin_dash
+	coins["eth"] = coin_ethereum
+	coins["eth_ganache"] = coin_ethereum_ganache
+
+	coins_key := make([]string, 0)
+	for coin, _ := range coins {
+		coins_key = append(coins_key, coin)
+	}
+
 	flag.StringVar(&privkey, "privkey", "", "Override privkey")
 	flag.IntVar(&windex, "windex", 0, "Wallet index in micro-wallet")
-	flag.StringVar(&coin, "coin", Bitcoin, strings.Join([]string{
-		Bitcoin,
-		BitcoinTestnet,
-		Litecoin,
-		Dogecoin,
-		Dashcoin,
-		Ethereum,
-		EthereumGanache,
-	}, ", "))
+	flag.StringVar(&coin, "coin", "btc", strings.Join(coins_key, ", "))
 	flag.StringVar(&rawdests, "dest", "", "Output destination (format=addr0:value0,addr1:value1,...)")
 	flag.StringVar(&action, "action", "", strings.Join([]string{GetAddress, GetBalance, Transfer}, ", "))
 	flag.Parse()
@@ -116,22 +115,9 @@ func main() {
 	}
 
 	// Coin decision
-	switch coin {
-	case Bitcoin:
-		coin_bitcoin()
-	case BitcoinTestnet:
-		coin_bitcoin_testnet()
-	case Litecoin:
-		coin_litecoin()
-	case Dogecoin:
-		coin_dogecoin()
-	case Dashcoin:
-		coin_dash()
-	case Ethereum:
-		coin_ethereum()
-	case EthereumGanache:
-		coin_ethereum_ganache()
-	default:
+	subprogram, found := coins[coin]
+	if !found {
 		log.Fatal("unknown coin " + coin)
 	}
+	subprogram()
 }
