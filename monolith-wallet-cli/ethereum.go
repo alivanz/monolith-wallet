@@ -28,6 +28,13 @@ func coin_ethereum_ganache() {
 	}
 	coin_ethereum_(client)
 }
+func coin_ethereum_rinkeby() {
+	client, err := ethclient.Dial("http://rinkeby.infura.io")
+	if err != nil {
+		log.Fatal(err)
+	}
+	coin_ethereum_(client)
+}
 func coin_ethereum_(client *ethclient.Client) {
 	publicKeyECDSA, err := wallet.PubKey()
 	if err != nil {

@@ -19,6 +19,7 @@ const (
 	Ethereum = "eth"
 	// test
 	EthereumGanache = "eth_ganache"
+	EthereumRinkeby = "eth_rinkeby"
 
 	// Action
 	GetAddress = "get-address"
@@ -42,7 +43,13 @@ var (
 
 func main() {
 	flag.StringVar(&privkey, "privkey", "", "Override privkey")
-	flag.StringVar(&coin, "coin", Bitcoin, strings.Join([]string{Bitcoin, Dogecoin, Ethereum, EthereumGanache}, ", "))
+	flag.StringVar(&coin, "coin", Bitcoin, strings.Join([]string{
+		Bitcoin,
+		Dogecoin,
+		Ethereum,
+		EthereumGanache,
+		EthereumRinkeby,
+	}, ", "))
 	flag.StringVar(&rawdests, "dest", "", "Output destination (format=addr0:value0,addr1:value1,...)")
 	flag.StringVar(&action, "action", "", strings.Join([]string{GetAddress, GetBalance, Transfer}, ", "))
 	flag.Parse()
@@ -111,6 +118,8 @@ func main() {
 		coin_ethereum()
 	case EthereumGanache:
 		coin_ethereum_ganache()
+	case EthereumRinkeby:
+		coin_ethereum_rinkeby()
 	default:
 		log.Fatal("unknown coin " + coin)
 	}
